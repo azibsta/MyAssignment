@@ -1,34 +1,200 @@
 <!DOCTYPE html>
-<html>
-<head><title>Secure Register</title></head>
-<body style="font-family:sans-serif; text-align:center; padding-top:50px; background:#f4f4f4;">
-    <div style="background:white; display:inline-block; padding:30px; border-radius:10px; box-shadow:0 0 10px #ccc;">
-        <h2>Register</h2>
-        <form method="POST">
-            <input type="text" name="username" placeholder="Username" required><br><br>
-            
-            <input type="password" name="password" placeholder="Password" required>
-            <small style="display:block; color:gray; font-size:10px;">(Min 8 chars, A-Z, 0-9, Symbol)</small><br>
-            
-            <input type="email" name="email" placeholder="Email (Masked in DB)" required><br><br>
-            <input type="text" name="phone" placeholder="Phone (Encrypted in DB)" required><br><br>
-            
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Registration | Student Project Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+            font-size: 14px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dcdfe6;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #409eff;
+        }
+        .password-policy {
+            font-size: 11px;
+            color: #909399;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+        .show-password-wrap {
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: #606266;
+            cursor: pointer;
+        }
+        .show-password-wrap input {
+            margin-right: 8px;
+        }
+        .pdpa-box {
+            background: #fdf6ec;
+            border: 1px solid #faecd8;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #e6a23c;
+            margin-bottom: 20px;
+        }
+        .pdpa-box input {
+            margin-right: 10px;
+        }
+        .btn-register {
+            width: 100%;
+            padding: 14px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-register:hover {
+            background-color: #218838;
+        }
+        .footer-links {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .footer-links a {
+            color: #409eff;
+            text-decoration: none;
+        }
+        .error-msg {
+            background: #fef0f0;
+            color: #f56c6c;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            text-align: center;
+            border: 1px solid #fde2e2;
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+    <h2>Create Account</h2>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="error-msg">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form action="/register" method="POST">
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="e.g. StudentID123" required>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" id="regPass" placeholder="••••••••" required>
+            <div class="show-password-wrap">
+                <input type="checkbox" id="toggleCheck" onclick="togglePasswordVisibility()"> 
+                <label for="toggleCheck" style="margin:0; font-weight:normal; cursor:pointer;">Show Password</label>
+            </div>
+            <div class="password-policy">
+                <i class="fa fa-info-circle"></i> Must be 8+ characters, include an uppercase letter, a number, and a special symbol (!@#$%).
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="student@mmu.edu.my" required>
+        </div>
+
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" name="phone" placeholder="012-3456789" required>
+        </div>
+
+        <div class="form-group">
+            <label>System Role</label>
             <select name="role">
                 <option value="3">Student</option>
                 <option value="2">Lecturer</option>
-                <option value="1">Admin</option>
                 <option value="4">External Examiner</option>
-            </select><br><br>
-            
-            <input type="checkbox" name="consent" required>
-            <label>I agree to PDPA Data Processing.</label><br><br>
-            
-            <button type="submit" style="background:#28a745; color:white; border:none; padding:10px;">Register</button>
-        </form>
-        <br><a href="/">Back to Login</a>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %} <p style="color:red">{{ messages[0] }}</p> {% endif %}
-        {% endwith %}
+                <option value="1">System Admin</option>
+            </select>
+        </div>
+
+        <div class="pdpa-box">
+            <label style="display: flex; align-items: flex-start; font-weight: normal; color: #826332;">
+                <input type="checkbox" name="consent" style="margin-top: 3px;" required>
+                <span>I hereby consent to the processing of my personal data in accordance with the <b>Malaysia PDPA 2010</b> regulations.</span>
+            </label>
+        </div>
+
+        <button type="submit" class="btn-register">Register Account</button>
+    </form>
+
+    <div class="footer-links">
+        Already have an account? <a href="/">Login here</a>
     </div>
+</div>
+
+<script>
+    function togglePasswordVisibility() {
+        var passwordField = document.getElementById("regPass");
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+        } else {
+            passwordField.type = "password";
+        }
+    }
+</script>
+
 </body>
 </html>

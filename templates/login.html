@@ -3,13 +3,31 @@
 <head><title>Secure Login</title></head>
 <body style="font-family:sans-serif; text-align:center; padding-top:50px; background:#f4f4f4;">
     <div style="background:white; display:inline-block; padding:30px; border-radius:10px; box-shadow:0 0 10px #ccc;">
-        <h2>Login to Portal</h2>
-        <form method="POST">
-            <input type="text" name="username" placeholder="Username" required style="padding:10px; width:90%;"><br><br>
-            <input type="password" name="password" placeholder="Password" required style="padding:10px; width:90%;"><br><br>
-            <button type="submit" style="padding:10px 20px; background:#007bff; color:white; border:none;">Login</button>
-        </form>
-        <br><a href="/register">Create Account</a>
+    <h2>Login to Portal</h2>
+    <form method="POST">
+        <input type="text" name="username" placeholder="Username" required style="padding:10px; width:90%;"><br><br>
+        
+        <input type="password" name="password" id="loginPass" placeholder="Password" required style="padding:10px; width:90%;"><br>
+        
+        <div style="text-align: left; margin-left: 5%; margin-top: 5px;">
+            <input type="checkbox" onclick="togglePass('loginPass')"> <small>Show Password</small>
+        </div><br>
+        
+        <button type="submit" style="padding:10px 20px; background:#007bff; color:white; border:none; cursor:pointer;">Login</button>
+    </form>
+    <br><a href="/register">Create Account</a>
+</div>
+
+<script>
+function togglePass(id) {
+    var x = document.getElementById(id);
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+</script>
         {% with messages = get_flashed_messages() %}
             {% if messages %} <p style="color:red">{{ messages[0] }}</p> {% endif %}
         {% endwith %}
