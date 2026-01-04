@@ -19,6 +19,7 @@ def get_db():
         'SERVER=LAPTOP-7O2M5DER;'  
         'DATABASE=StudentProjectDB;'
         'Trusted_Connection=yes;'
+        'TrustServerCertificate=yes;'
     )
     
     # --- ROW-LEVEL SECURITY (RLS) INJECTION ---
@@ -77,7 +78,7 @@ def inject_globals():
 @app.route('/')
 def home():
     if 'user_id' in session: return redirect(url_for('dashboard'))
-    return render_template('login.html')
+    return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
