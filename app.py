@@ -12,8 +12,8 @@ app.secret_key = 'secure_assignment_key_final'
 def get_db():
     # 1. Create the connection object (store it in a variable)
     conn = pyodbc.connect(
-        'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=localhost;'
+        'DRIVER={ODBC Driver 18 for SQL Server};'
+        'SERVER=LAPTOP-7O2M5DER;'
         'DATABASE=StudentProjectDB;'
         'Trusted_Connection=yes;'
     )
