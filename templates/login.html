@@ -50,6 +50,7 @@
         <p style="color: #777; font-size: 0.9rem;">Enter your credentials to access your dashboard</p>
         
         <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="input-group">
                 <i class="fa fa-user"></i>
                 <input type="text" name="username" placeholder="Username" required>

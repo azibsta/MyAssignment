@@ -4,12 +4,13 @@ import hashlib
 import os
 import re
 from datetime import datetime
+from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__)
 
 # [SECURITY] Use Environment Variable for Secret Key
 app.secret_key = os.getenv('FLASK_SECRET', 'dev_fallback_key_do_not_use_in_prod')
-
+csrf = CSRFProtect(app)
 # --- DATABASE CONNECTION ---
 def get_db():
     conn = pyodbc.connect(
@@ -192,7 +193,7 @@ def delete_project(id):
         flash("Project Deleted")
     return redirect(url_for('dashboard'))
 
-@app.route('/toggle_security')
+@app.route('/toggle_security', methods=['POST'])
 def toggle_security():
     if session.get('role') == 1:
         conn = get_db()

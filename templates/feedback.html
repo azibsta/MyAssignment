@@ -4,6 +4,7 @@
 <body style="font-family:sans-serif; padding:30px; background:#f4f6f8;">
     <h2>📬 Report Issue / Feedback</h2>
     <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <label>Type:</label>
         <select name="type">
             <option>Bug</option>

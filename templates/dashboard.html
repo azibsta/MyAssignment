@@ -31,7 +31,13 @@
     {% if role == 1 %}
     <div class="card" style="border-left: 5px solid #d9534f;">
         <h3>🛡️ Admin Security Center</h3>
-        <p>Uploads: <b>{{ 'ENABLED' if uploads_allowed == 'TRUE' else 'DISABLED' }}</b> <a href="/toggle_security">[Toggle]</a></p>
+        <p>
+            Uploads: <b>{{ 'ENABLED' if uploads_allowed == 'TRUE' else 'DISABLED' }}</b>
+            <form action="/toggle_security" method="POST" style="display:inline;">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer;">[Toggle]</button>
+            </form>
+        </p>
         
         <h4>Live Audit Log</h4>
         <div class="log-terminal">
@@ -96,6 +102,7 @@
                         {% endfor %}
                         {% if role == 3 %}
                         <form action="/add_milestone" method="POST" style="margin-top:5px;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="assign_id" value="{{ p[0] }}">
                             <input type="text" name="task" placeholder="Task..." size="10">
                             <button type="submit">+</button>
@@ -107,6 +114,7 @@
                     {% if role < 3 %}
                     <td>
                         <form action="/delete/{{ p[0] }}" method="POST" onsubmit="return confirm('Delete?');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <button style="color:red; background:none; border:none; cursor:pointer;">Delete</button>
                         </form>
                     </td>
@@ -123,6 +131,7 @@
     <div class="card">
         <h3>Submit Project</h3>
         <form action="/submit" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <input type="text" name="title" placeholder="Title" required>
             <input type="text" name="link" placeholder="GitHub Link" required>
             <input type="text" name="desc" placeholder="Description">
