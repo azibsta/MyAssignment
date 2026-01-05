@@ -74,6 +74,7 @@ CREATE TABLE Sec.AuditLog (
     ActionType NVARCHAR(50), 
     TableName NVARCHAR(50),
     RecordID INT,
+    UserID INT,
     UserIP NVARCHAR(50),
     Timestamp DATETIME DEFAULT GETDATE(),
     Details NVARCHAR(255)
